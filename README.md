@@ -120,14 +120,14 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDial
 ```
 <H1>3. Настройки RabbitMQ</H1>
 Если вы планируете использовать RabbitMQ, установленный на локальной машине, то проверьте настройки доступа с имененем пользователя и паролем. В приложении
-используется пользователь по-молчанию:
+используется пользователь по умолчанию:
   
 ```Java
 messaging.rabbit.host.user = guest
 messaging.rabbit.host.password = guest
 ```
 Если у вас создан другой пользователь, то замените свойства выше на свои значения.
-Расположение сервера с RabbitMQ так же используется по-умолчанию:
+Расположение сервера с RabbitMQ так же используется по умолчанию:
   
 ```Java
 messaging.rabbit.host.url = localhost
