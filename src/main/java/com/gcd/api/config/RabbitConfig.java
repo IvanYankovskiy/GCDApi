@@ -43,23 +43,23 @@ public class RabbitConfig {
     @Value("${messaging.exchange.autodelete}")
     boolean exchangeAutoDelete;
     
-    @Value("${messaging.gueue.task.name}")
+    @Value("${messaging.queue.task.name}")
     String taskQueueName;
     
-    @Value("${messaging.gueue.task.durable}")
+    @Value("${messaging.queue.task.durable}")
     boolean taskQueueDurable;
     
-    @Value("${messaging.gueue.task.binding.key}")
+    @Value("${messaging.queue.task.binding.key}")
     String taskQueueBindingKey;
     
     
-    @Value("${messaging.gueue.result.name}")
+    @Value("${messaging.queue.result.name}")
     String resultQueueName;
     
-    @Value("${messaging.gueue.result.durable}")
+    @Value("${messaging.queue.result.durable}")
     boolean resultQueueDurable;
     
-    @Value("${messaging.gueue.result.binding.key}")
+    @Value("${messaging.queue.result.binding.key}")
     String resultQueueBindingKey;
     
     @Value("${messaging.reciever.maxConcurrentConsumers}")
