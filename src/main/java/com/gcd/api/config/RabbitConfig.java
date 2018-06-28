@@ -14,20 +14,65 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 @Configuration
 @EnableRabbit
 public class RabbitConfig {
-    @Autowired
-    Environment environment;
-       
+    
+    @Value("${messaging.rabbit.host.url}")
+    String hostUrl;
+    
+    @Value("${messaging.rabbit.host.port}")
+    int hostPort;
+    
+    @Value("${messaging.rabbit.host.user}")
+    String hostUser;
+    
+    @Value("${messaging.rabbit.host.password}")
+    String hostPassword;
+    
+    @Value("${messaging.exchange.name}")
+    String exchangeName;
+    
+    @Value("${messaging.exchange.durable}")
+    boolean exchangeDurable;
+    
+    @Value("${messaging.exchange.autodelete}")
+    boolean exchangeAutoDelete;
+    
+    @Value("${messaging.gueue.task.name}")
+    String taskQueueName;
+    
+    @Value("${messaging.gueue.task.durable}")
+    boolean taskQueueDurable;
+    
+    @Value("${messaging.gueue.task.binding.key}")
+    String taskQueueBindingKey;
+    
+    
+    @Value("${messaging.gueue.result.name}")
+    String resultQueueName;
+    
+    @Value("${messaging.gueue.result.durable}")
+    boolean resultQueueDurable;
+    
+    @Value("${messaging.gueue.result.binding.key}")
+    String resultQueueBindingKey;
+    
+    @Value("${messaging.reciever.maxConcurrentConsumers}")
+    int recieverMaxConcurrentConsumers;
+    
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
+        CachingConnectionFactory connectionFactory =
+            new CachingConnectionFactory(hostUrl);
+        connectionFactory.setPort(hostPort);
+        connectionFactory.setUsername(hostUser);
+        connectionFactory.setPassword(hostPassword);
+        return connectionFactory;
     }
 
     @Bean
@@ -44,18 +89,18 @@ public class RabbitConfig {
     
     @Bean
     public DirectExchange exchange() {
-        return new DirectExchange("gcd.messages", true, false);
+        return new DirectExchange(exchangeName, exchangeDurable, exchangeAutoDelete);
     } 
     
 
     @Bean
     public Queue taskQueue() {
-       return new Queue("taskQueue",true);
+       return new Queue(taskQueueName, taskQueueDurable);
     }
     
     @Bean
     public Queue resultQueue() {
-        return new Queue("resultQueue", true);
+        return new Queue(resultQueueName, resultQueueDurable);
     }
     
     @Bean
@@ -72,14 +117,14 @@ public class RabbitConfig {
     public Binding bindingResult(DirectExchange exchange, Queue resultQueue) {
         return BindingBuilder.bind(resultQueue)
                 .to(exchange)
-                .with("result");
+                .with(resultQueueBindingKey);
     }
     
     @Bean
     public Binding bindingTask(DirectExchange exchange, Queue taskQueue) {
         return BindingBuilder.bind(taskQueue)
                 .to(exchange)
-                .with("task");
+                .with(taskQueueBindingKey);
     }
     
     @Bean
@@ -87,8 +132,7 @@ public class RabbitConfig {
         SimpleRabbitListenerContainerFactory factory 
                 = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-        factory.setMaxConcurrentConsumers(environment.
-                getRequiredProperty("messaging.reciever.maxConcurrentConsumers", int.class));
+        factory.setMaxConcurrentConsumers(recieverMaxConcurrentConsumers);
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
         return factory;
     }
