@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/gcdapi")
+@RequestMapping("/")
 public class ApiController {
     Logger logger = LoggerFactory.getLogger(ApiController.class);
     
