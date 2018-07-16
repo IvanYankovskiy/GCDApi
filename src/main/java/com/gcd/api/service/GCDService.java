@@ -1,6 +1,7 @@
 package com.gcd.api.service;
 
 import com.gcd.api.entities.Task;
+import java.util.Optional;
 
 /**
  *
@@ -8,7 +9,7 @@ import com.gcd.api.entities.Task;
  */
 public interface GCDService {
     Task addTask(Task task);
-    Task getTaskById(long id);
+    Optional<Task> getTaskById(long id);
     void updateTaskWithRecievedResult(Task result);
     /**
      * Save task 

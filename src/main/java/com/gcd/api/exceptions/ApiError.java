@@ -2,27 +2,27 @@ package com.gcd.api.exceptions;
 
 public class ApiError {
     private String status = "ERROR";
-    private String error;
+    private String message;
+    private String details;
 
-    public ApiError(String error) {
-        this.error = error;
-    }
-    
-    public String getStatus() {
-        return status;
+    public ApiError(String message, String details) {
+        this.message = message;
+        this.details = details;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getMessage() {
+        return message;
     }
 
-    public String getError() {
-        return error;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public String getDetails() {
+        return details;
     }
 
-    
+    public void setDetails(String details) {
+        this.details = details;
+    }   
 }

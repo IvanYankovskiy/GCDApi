@@ -25,18 +25,8 @@ public class GCDServiceJpaImplementation implements GCDService {
     }
 
     @Override
-    public Task getTaskById(long id) {
-        Task task;
-        Optional<Task> taskOpt = repository.findById(id);
-        if (!taskOpt.isPresent()){
-            task = new Task();
-            task.setId(id);
-            task.setStatus(TaskStatus.ERROR);
-            task.setError("Requested task(with id=" + id + ") does not exist");
-        } else {
-            task = taskOpt.get();
-        }
-        return task;
+    public Optional<Task> getTaskById(long id) {
+        return repository.findById(id);
     }
 
     @Override
